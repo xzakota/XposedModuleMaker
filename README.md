@@ -1,0 +1,120 @@
+# Xposed Module Maker
+[![GitHub license](https://img.shields.io/github/license/xzakota/XposedModuleMaker?color=blue)](https://github.com/xzakota/XposedModuleMaker/blob/main/LICENSE)
+[![GitHub release](https://img.shields.io/github/v/release/xzakota/XposedModuleMaker?display_name=release&logo=github&color=green)](https://github.com/xzakota/XposedModuleMaker/releases)
+
+快速配置 [Xposed](https://api.xposed.info) 模块**元信息**。利用 KSP(Kotlin Symbol Processing) 实现入口类的检测和写入，利用 Gradle 插件实现其他资源的创建和合并。
+> 仅针对元信息配置，不包含 HOOK 代码实现
+
+# 支持
+- Legacy API 元信息
+- [LSP Modern API](https://github.com/LSPosed/LSPosed/wiki/Develop-Xposed-Modules-Using-Modern-Xposed-API) 元信息
+
+# 使用
+在 app 目录下的 `build.gradle.kts` 添加
+
+## 插件及依赖
+```
+plugins {
+    id("com.google.devtools.ksp")
+    id("com.xzakota.xposed")
+}
+
+dependencies {
+    compileOnly("com.xzakota.xposed:annotation:${version}")
+    ksp("com.xzakota.xposed:processor:${version}")
+}
+```
+
+## 配置一(入口类)
+`Legacy API`
+
+```Kotlin
+import com.xzakota.xposed.annotation.XposedModule
+import de.robv.android.xposed.IXposedHookLoadPackage
+
+// 添加注解
+@XposedModule
+class XPModuleMainEntry : IXposedHookLoadPackage 
+```
+
+`LSP Modern API`
+
+```Kotlin
+import com.xzakota.xposed.annotation.LSPosedModule
+import io.github.libxposed.api.XposedInterface
+import io.github.libxposed.api.XposedModule
+import io.github.libxposed.api.XposedModuleInterface
+
+// 添加注解
+@LSPosedModule
+class LSPModuleMainEntry(base : XposedInterface, param : XposedModuleInterface.ModuleLoadedParam) : XposedModule(base, param) 
+```
+
+## 配置二
+|       字段       |       作用       |
+|:--------------:|:--------------:|
+| isXposedModule | 控制资源生成插件的启用/禁用 |
+| minAPIVersion  |   最低 API 版本    |
+|  description   |      模块介绍      |
+|     scope      |  作用域(需管理器支持)   |
+
+|     扩展方法     |          作用           |
+|:------------:|:---------------------:|
+| description  |   多国语言的模块介绍(会覆盖字段值)   |
+|  framework   |        想支持的框架         |
+|   lsposed    | 针对 LSP Modern API 的配置 |
+|    scope     |      作用域(需管理器支持)      |
+| resGenerator |       针对资源生成的配置       |
+
+具体值按需填写，提供一份详细举例
+```
+xposedModule {
+    isXposedModule = true
+    minAPIVersion = XposedAPIVersion.XP_API_82
+    
+    // description = "Xposed Example"
+    description {
+        // 默认介绍
+        resString("Xposed Example")
+        // 中文介绍
+        resString("一个 Xposed 模块样例", LangCode.LANG_CODE_ZH_CN)
+    }
+    
+    // 默认 XposedFramework.XPOSED
+    framework {
+        // 添加
+        add(XposedFramework.LSPOSED)
+        // 删除
+        // remove(XposedFramework.XPOSED)
+        // 只支持
+        // single(XposedFramework.LSPOSED)
+    }
+    
+    lsposed {
+        // 新共享首选项(将在 LSPosed-2.1.0 停止支持)
+        isNewXSharedPreferences = false
+        // 目标 API 版本
+        targetAPIVersion = XposedAPIVersion.XP_API_100
+        // 静态作用域
+        isStaticScope = true
+    }
+    
+    resGenerator {
+        // 资源 ID 名称
+        resID {
+            descriptionResID = "xposed_module_description"
+            scopeResID = "xposed_module_scope"
+        }
+    }
+
+    scope += listOf(
+        "com.android.settings"
+    )
+}
+```
+另可参考 [example](https://github.com/xzakota/XposedModuleMaker/tree/main/example) 模块
+
+# TODO
+- [ ] Native 入口文件
+- [ ] 现阶段使用双插件(KSP + Gradle) 实现元信息的配置，后续可能考虑合并到 Gradle，也可能保留
+- [ ] 配套使用的 HOOK 工具库
