@@ -34,14 +34,7 @@ abstract class GenerateModuleManifestTask : BaseModuleGenerateTask() {
 
             addElement("application").apply {
                 if (isSupportLSPosed) {
-                    addAttribute(
-                        QUALIFIED_NAME_DESCRIPTION,
-                        if (moduleConfig.descriptionRes.isNotEmpty()) {
-                            "@string/${resID.descriptionResID}"
-                        } else {
-                            moduleConfig.description
-                        }
-                    )
+                    addAttribute(QUALIFIED_NAME_DESCRIPTION, "@string/${resID.descriptionResID}")
                 }
 
                 addMetaDataElementWithValue("xposedmodule", "true", isSupportXposed)
