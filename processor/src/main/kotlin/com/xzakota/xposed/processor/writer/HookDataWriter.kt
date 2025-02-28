@@ -19,7 +19,7 @@ abstract class HookDataWriter : BaseWriter() {
                 }
 
                 environment.codeGenerator.createNewFileByPath(
-                    Dependencies(false), getEntryFile(), ""
+                    Dependencies.ALL_FILES, getEntryFile(), ""
                 ).bufferedWriter().use { writer ->
                     writer.write(requireNotNull(type.qualifiedName?.asString()))
                 }
