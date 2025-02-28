@@ -19,7 +19,7 @@ subprojects {
     }
 
     group = "com.xzakota.xposed"
-    version = "0.1.0"
+    version = "0.1.1"
 
     plugins.withType(JavaPlugin::class.java) {
         extensions.configure(JavaPluginExtension::class.java) {
