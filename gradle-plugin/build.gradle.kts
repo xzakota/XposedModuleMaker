@@ -16,5 +16,10 @@ gradlePlugin {
 
 dependencies {
     compileOnly(libs.android.tools)
+
     implementation(libs.dom4j)
+    implementation(libs.grip)
+
+    implementation(libs.xposed.module.maker.annotation)
+    api(libs.xposed.module.maker.constant)
 }

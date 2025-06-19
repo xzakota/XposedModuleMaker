@@ -2,7 +2,7 @@
 [![GitHub license](https://img.shields.io/github/license/xzakota/XposedModuleMaker?color=blue)](https://github.com/xzakota/XposedModuleMaker/blob/main/LICENSE)
 [![GitHub release](https://img.shields.io/github/v/release/xzakota/XposedModuleMaker?display_name=release&logo=github&color=green)](https://github.com/xzakota/XposedModuleMaker/releases)
 
-快速配置 [Xposed](https://api.xposed.info) 模块**元信息**。利用 KSP(Kotlin Symbol Processing) 实现入口类的检测和写入，利用 Gradle 插件实现其他资源的创建和合并。
+快速配置 [Xposed](https://api.xposed.info) 模块**元信息**。利用 Gradle 插件实现入口类的检测写入和其他资源的创建合并。
 > 仅针对元信息配置，不包含 HOOK 代码实现
 
 # 支持
@@ -15,13 +15,11 @@
 ## 插件及依赖
 ```
 plugins {
-    id("com.google.devtools.ksp")
     id("com.xzakota.xposed")
 }
 
 dependencies {
     compileOnly("com.xzakota.xposed:annotation:${version}")
-    ksp("com.xzakota.xposed:processor:${version}")
 }
 ```
 
@@ -87,7 +85,7 @@ xposedModule {
         // 删除
         // remove(XposedFramework.XPOSED)
         // 只支持
-        // single(XposedFramework.LSPOSED)
+        // only(XposedFramework.LSPOSED)
     }
     
     lsposed {
@@ -116,5 +114,4 @@ xposedModule {
 
 # TODO
 - [ ] Native 入口文件
-- [ ] 现阶段使用双插件(KSP + Gradle) 实现元信息的配置，后续可能考虑合并到 Gradle，也可能保留
 - [ ] 配套使用的 HOOK 工具库

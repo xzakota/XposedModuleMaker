@@ -3,6 +3,7 @@
 package com.xzakota.gradle.plugin.xposed
 
 import com.android.build.gradle.api.AndroidSourceSet
+import com.xzakota.extension.safeMkdirs
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.tasks.Input
@@ -32,9 +33,7 @@ abstract class GenerateModulePropertiesTask : BaseModuleGenerateTask() {
 
     override fun onAction() {
         val xposedPropertiesDir = File(outputDir.get().asFile, "META-INF/xposed")
-        if (!xposedPropertiesDir.exists()) {
-            xposedPropertiesDir.mkdirs()
-        }
+        xposedPropertiesDir.safeMkdirs()
 
         File(xposedPropertiesDir, "module.prop").writeText(
             """

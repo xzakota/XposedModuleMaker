@@ -4,8 +4,7 @@ import com.xzakota.android.xposed.XposedFramework
 plugins {
     id("com.android.application")
     kotlin("android")
-    alias(libs.plugins.kotlin.ksp)
-     alias(libs.plugins.xposed.module.maker)
+    alias(libs.plugins.xposed.module.maker)
 }
 
 android {
@@ -73,5 +72,4 @@ dependencies {
 
     // https://github.com/xzakota/XposedModuleMaker
     compileOnly(libs.xposed.module.maker.annotation)
-    ksp(libs.xposed.module.maker.processor)
 }

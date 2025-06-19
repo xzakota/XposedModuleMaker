@@ -11,6 +11,9 @@ internal object DataProvider {
 
     val isSupportLSPosed get() = isSupportLSPosed(moduleConfig)
 
+    lateinit var xposedEntryClassName : String
+    lateinit var lsposedEntryClassName : String
+
     fun init(config : XposedModuleExtension) {
         moduleConfig = config
     }

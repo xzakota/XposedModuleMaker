@@ -77,7 +77,12 @@ open class XposedModuleExtension {
             supportList.remove(element)
         }
 
+        @Deprecated("Please use only() instead")
         fun single(element : XposedFramework) {
+            only(element)
+        }
+
+        fun only(element : XposedFramework) {
             supportList.clear()
             add(element)
         }

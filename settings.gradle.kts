@@ -29,6 +29,6 @@ rootProject.name = "XposedModuleMaker"
 include(
     ":example",
     ":annotation",
-    ":processor",
+    ":constant",
     ":gradle-plugin"
 )

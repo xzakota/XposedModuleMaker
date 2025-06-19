@@ -1,26 +1,22 @@
 [versions]
 kotlin = "2.1.10"
-ksp = "2.1.10-1.0.29"
-agp = "8.8.2"
+agp = "8.10.1"
 
-xposed-module-maker = "0.1.0"
+xposed-module-maker = "0.1.1"
 
 [libraries]
 android-tools = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 
 xposed-api = { module = "de.robv.android.xposed:api", version = "82" }
 xposed-module-maker-annotation = { module = "com.xzakota.xposed:annotation", version.ref = "xposed-module-maker" }
-xposed-module-maker-processor = { module = "com.xzakota.xposed:processor", version.ref = "xposed-module-maker" }
+xposed-module-maker-constant = { module = "com.xzakota.xposed:constant", version.ref = "xposed-module-maker" }
 
 dom4j = { module = "org.dom4j:dom4j", version = "2.1.4" }
-auto-service = { module = "com.google.auto.service:auto-service", version = "1.1.1" }
-auto-service-ksp = { module = "dev.zacsweers.autoservice:auto-service-ksp", version = "1.2.0" }
-ksp-symbol-processing-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
+grip = { module = "com.joom.grip:grip", version = "0.9.1" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-kotlin-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 android-application = { id = "com.android.application", version.ref = "agp" }
 gradle-plugin-publish = { id = "com.gradle.plugin-publish", version = "1.2.1" }
 vanniktech-maven-publish = { id = "com.vanniktech.maven.publish", version = "0.30.0" }

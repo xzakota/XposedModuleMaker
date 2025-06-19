@@ -2,7 +2,9 @@
 
 package com.xzakota.gradle.plugin.xposed
 
+import com.android.build.api.artifact.ScopedArtifact
 import com.android.build.api.variant.AndroidComponentsExtension
+import com.android.build.api.variant.ScopedArtifacts
 import com.android.build.api.variant.Variant
 import com.android.build.gradle.AppPlugin
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
@@ -10,7 +12,6 @@ import com.android.build.gradle.internal.tasks.factory.dependsOn
 import com.xzakota.android.xposed.XposedAPIVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.plugins.JavaPlugin
 import java.util.Locale
 
 @Suppress("unused")
@@ -56,11 +57,25 @@ class GradlePluginForXposed : Plugin<Project> {
                 if (moduleConfig.lsposed.targetAPIVersion >= XposedAPIVersion.XP_API_100) {
                     variant.packaging.resources.merges.add("META-INF/xposed/*")
                 }
-            } else {
-                variant.packaging.resources.excludes.add("META-INF/xposed/java_init.list")
+            }
+
+            taskName = "generate${variantTitleName}XposedEntryClass"
+            if (tasks.findByPath(taskName) == null) {
+                val task = tasks.register(taskName, GenerateModuleEntryTask::class.java)
+                variant.artifacts.forScope(ScopedArtifacts.Scope.PROJECT)
+                    .use(task)
+                    .toTransform(
+                        ScopedArtifact.CLASSES,
+                        GenerateModuleEntryTask::allJars,
+                        GenerateModuleEntryTask::allDirectories,
+                        GenerateModuleEntryTask::classOutput
+                    )
+
+                variant.sources.resources?.addGeneratedSourceDirectory(
+                    task, GenerateModuleEntryTask::entryOutput
+                )
             }
         }
-
 
         val androidExtensions = project.extensions.getByName("android") as BaseAppModuleExtension
         project.afterEvaluate {
@@ -85,11 +100,5 @@ class GradlePluginForXposed : Plugin<Project> {
                 }
             }
         }
-    }
-
-    private fun Project.addDependencies() {
-        val version = 1
-        val configurationName = JavaPlugin.IMPLEMENTATION_CONFIGURATION_NAME
-        dependencies.add(configurationName, "org.lsposed.lsparanoid:core:$version")
     }
 }
