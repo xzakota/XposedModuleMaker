@@ -27,34 +27,35 @@ dependencies {
 `Legacy API`
 
 ```Kotlin
-import com.xzakota.xposed.annotation.XposedModule
+import com.xzakota.xposed.annotation.ModuleEntry
 import de.robv.android.xposed.IXposedHookLoadPackage
 
 // 添加注解
-@XposedModule
+@ModuleEntry
 class XPModuleMainEntry : IXposedHookLoadPackage 
 ```
 
 `LSP Modern API`
 
 ```Kotlin
-import com.xzakota.xposed.annotation.LSPosedModule
+import com.xzakota.xposed.annotation.ModuleEntry
 import io.github.libxposed.api.XposedInterface
 import io.github.libxposed.api.XposedModule
 import io.github.libxposed.api.XposedModuleInterface
 
 // 添加注解
-@LSPosedModule
+@ModuleEntry
 class LSPModuleMainEntry(base : XposedInterface, param : XposedModuleInterface.ModuleLoadedParam) : XposedModule(base, param) 
 ```
 
 ## 配置二
-|       字段       |       作用       |
-|:--------------:|:--------------:|
-| isXposedModule | 控制资源生成插件的启用/禁用 |
-| minAPIVersion  |   最低 API 版本    |
-|  description   |      模块介绍      |
-|     scope      |  作用域(需管理器支持)   |
+|          字段           |       作用       |
+|:---------------------:|:--------------:|
+|    isXposedModule     | 控制资源生成插件的启用/禁用 |
+|     minAPIVersion     |   最低 API 版本    |
+|      description      |      模块介绍      |
+|         scope         |  作用域(需管理器支持)   |
+| isIncludeDependencies |    是否检索依赖库     |
 
 |     扩展方法     |          作用           |
 |:------------:|:---------------------:|
@@ -108,6 +109,8 @@ xposedModule {
     scope += listOf(
         "com.android.settings"
     )
+    
+    isIncludeDependencies = false
 }
 ```
 另可参考 [example](https://github.com/xzakota/XposedModuleMaker/tree/main/example) 模块

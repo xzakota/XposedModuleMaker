@@ -32,6 +32,9 @@ abstract class BaseModuleGenerateTask : DefaultTask() {
     @Internal
     protected val moduleResGenerator = xposedModuleConfig.resGenerator
 
+    @get:Input
+    protected val isIncludeDependencies = xposedModuleConfig.isIncludeDependencies
+
     @TaskAction
     fun run() {
         onAction()

@@ -32,6 +32,9 @@ open class XposedModuleExtension {
     // R 资源生成控制
     internal val resGenerator = ResGenerator()
 
+    // 是否检索依赖库
+    var isIncludeDependencies = false
+
     fun description(action : Action<Description>) {
         action.execute(descriptionRes)
     }
@@ -75,11 +78,6 @@ open class XposedModuleExtension {
 
         fun remove(element : XposedFramework) {
             supportList.remove(element)
-        }
-
-        @Deprecated("Please use only() instead")
-        fun single(element : XposedFramework) {
-            only(element)
         }
 
         fun only(element : XposedFramework) {

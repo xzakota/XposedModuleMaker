@@ -4,7 +4,7 @@ package com.xzakota.gradle.plugin.xposed
 
 import com.android.build.api.artifact.ScopedArtifact
 import com.android.build.api.variant.AndroidComponentsExtension
-import com.android.build.api.variant.ScopedArtifacts
+import com.android.build.api.variant.ScopedArtifacts.Scope
 import com.android.build.api.variant.Variant
 import com.android.build.gradle.AppPlugin
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
@@ -62,14 +62,18 @@ class GradlePluginForXposed : Plugin<Project> {
             taskName = "generate${variantTitleName}XposedEntryClass"
             if (tasks.findByPath(taskName) == null) {
                 val task = tasks.register(taskName, GenerateModuleEntryTask::class.java)
-                variant.artifacts.forScope(ScopedArtifacts.Scope.PROJECT)
-                    .use(task)
-                    .toTransform(
-                        ScopedArtifact.CLASSES,
-                        GenerateModuleEntryTask::allJars,
-                        GenerateModuleEntryTask::allDirectories,
-                        GenerateModuleEntryTask::classOutput
-                    )
+                variant.artifacts.forScope(
+                    if (moduleConfig.isIncludeDependencies) {
+                        Scope.ALL
+                    } else {
+                        Scope.PROJECT
+                    }
+                ).use(task).toTransform(
+                    ScopedArtifact.CLASSES,
+                    GenerateModuleEntryTask::allJars,
+                    GenerateModuleEntryTask::allDirectories,
+                    GenerateModuleEntryTask::classOutput
+                )
 
                 variant.sources.resources?.addGeneratedSourceDirectory(
                     task, GenerateModuleEntryTask::entryOutput

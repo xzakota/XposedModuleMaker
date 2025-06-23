@@ -5,7 +5,7 @@ import android.app.Application
 import android.content.Context
 import com.xzakota.hook.example.BuildConfig
 import com.xzakota.hook.example.utils.HookUtils
-import com.xzakota.xposed.annotation.XposedModule
+import com.xzakota.xposed.annotation.ModuleEntry
 import de.robv.android.xposed.IXposedHookLoadPackage
 import de.robv.android.xposed.IXposedHookZygoteInit
 import de.robv.android.xposed.XC_MethodHook
@@ -13,8 +13,8 @@ import de.robv.android.xposed.XposedBridge
 import de.robv.android.xposed.XposedHelpers
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 
-@XposedModule
-class XPModuleMainEntry : IXposedHookZygoteInit, IXposedHookLoadPackage {
+@ModuleEntry
+class XPInitEntry : IXposedHookZygoteInit, IXposedHookLoadPackage {
     override fun initZygote(startupParam : IXposedHookZygoteInit.StartupParam) {
         log("OnCreate XPModuleMainEntry")
     }

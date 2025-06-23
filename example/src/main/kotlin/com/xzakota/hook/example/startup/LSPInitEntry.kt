@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import com.xzakota.hook.example.BuildConfig
-import com.xzakota.xposed.annotation.LSPosedModule
+import com.xzakota.xposed.annotation.ModuleEntry
 import io.github.libxposed.api.XposedInterface
 import io.github.libxposed.api.XposedModule
 import io.github.libxposed.api.XposedModuleInterface
@@ -15,8 +15,8 @@ import kotlin.random.Random
 
 private lateinit var module : XposedModule
 
-@LSPosedModule
-class LSPModuleMainEntry(
+@ModuleEntry
+class LSPInitEntry(
     base : XposedInterface,
     param : XposedModuleInterface.ModuleLoadedParam
 ) : XposedModule(base, param) {
