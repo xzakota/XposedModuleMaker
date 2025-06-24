@@ -35,6 +35,9 @@ open class XposedModuleExtension {
     // 是否检索依赖库
     var isIncludeDependencies = false
 
+    // 是否检索依赖库
+    var isGenerateConfigClass = false
+
     fun description(action : Action<Description>) {
         action.execute(descriptionRes)
     }
@@ -59,6 +62,7 @@ open class XposedModuleExtension {
         XposedModuleExtension {
             isXposedModule => $isXposedModule
             minAPIVersion => $minAPIVersion
+            framework => $framework
         }
     """.trimIndent()
 
@@ -85,7 +89,11 @@ open class XposedModuleExtension {
             add(element)
         }
 
+        fun isEmpty() : Boolean = supportList.isEmpty()
+
         internal infix fun has(element : XposedFramework) : Boolean = supportList.contains(element)
+
+        override fun toString() : String = supportList.toString()
     }
 
     open class LSPosedAPI internal constructor() {

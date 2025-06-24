@@ -32,10 +32,10 @@ abstract class GenerateModulePropertiesTask : BaseModuleGenerateTask() {
     }
 
     override fun onAction() {
-        val xposedPropertiesDir = File(outputDir.get().asFile, "META-INF/xposed")
-        xposedPropertiesDir.safeMkdirs()
+        val modulePropertiesDir = File(outputDir.get().asFile, "META-INF/xposed")
+        modulePropertiesDir.safeMkdirs()
 
-        File(xposedPropertiesDir, "module.prop").writeText(
+        File(modulePropertiesDir, "module.prop").writeText(
             """
             minApiVersion=$moduleMinAPIVersion
             targetApiVersion=$moduleTargetAPIVersion
@@ -43,6 +43,6 @@ abstract class GenerateModulePropertiesTask : BaseModuleGenerateTask() {
             """.trimIndent()
         )
 
-        File(xposedPropertiesDir, "scope.list").writeText(moduleScope.joinToString("\n"))
+        File(modulePropertiesDir, "scope.list").writeText(moduleScope.joinToString("\n"))
     }
 }

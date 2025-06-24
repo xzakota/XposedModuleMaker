@@ -15,7 +15,7 @@
 ## 插件及依赖
 ```
 plugins {
-    id("com.xzakota.xposed")
+    id("com.xzakota.xposed") version "${version}"
 }
 
 dependencies {
@@ -49,13 +49,13 @@ class LSPModuleMainEntry(base : XposedInterface, param : XposedModuleInterface.M
 ```
 
 ## 配置二
-|          字段           |       作用       |
-|:---------------------:|:--------------:|
-|    isXposedModule     | 控制资源生成插件的启用/禁用 |
-|     minAPIVersion     |   最低 API 版本    |
-|      description      |      模块介绍      |
-|         scope         |  作用域(需管理器支持)   |
-| isIncludeDependencies |    是否检索依赖库     |
+|          字段           |     作用      |
+|:---------------------:|:-----------:|
+|    isXposedModule     | 控制插件的启用/禁用  |
+|     minAPIVersion     |  最低 API 版本  |
+|      description      |    模块介绍     |
+|         scope         | 作用域(需管理器支持) |
+| isIncludeDependencies |   是否检索依赖库   |
 
 |     扩展方法     |          作用           |
 |:------------:|:---------------------:|

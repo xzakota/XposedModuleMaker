@@ -6,13 +6,16 @@ import com.android.build.api.artifact.ScopedArtifact
 import com.android.build.api.variant.AndroidComponentsExtension
 import com.android.build.api.variant.ScopedArtifacts.Scope
 import com.android.build.api.variant.Variant
+import com.android.build.gradle.AppExtension
 import com.android.build.gradle.AppPlugin
-import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
-import com.android.build.gradle.internal.tasks.factory.dependsOn
 import com.xzakota.android.xposed.XposedAPIVersion
+import com.xzakota.extension.addDependencies
+import com.xzakota.xposed.BuildConfig
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.get
 import java.util.Locale
+
 
 @Suppress("unused")
 class GradlePluginForXposed : Plugin<Project> {
@@ -22,18 +25,15 @@ class GradlePluginForXposed : Plugin<Project> {
             return
         }
 
-        project.extensions.create("xposedModule", XposedModuleExtension::class.java)
-        registerTask(project)
+        registerTask(project, project.extensions.create("xposedModule", XposedModuleExtension::class.java))
     }
 
-    private fun registerTask(project : Project) {
-        val moduleConfig = project.extensions.getByName("xposedModule") as? XposedModuleExtension
-        if (moduleConfig == null || !moduleConfig.isXposedModule) {
-            return
-        }
+    private fun registerTask(project : Project, moduleConfig : XposedModuleExtension) {
+        project.extensions.getByType(AndroidComponentsExtension::class.java).onVariants { variant : Variant ->
+            if (!moduleConfig.isXposedModule) {
+                return@onVariants
+            }
 
-        val androidComponents = project.extensions.findByType(AndroidComponentsExtension::class.java)
-        androidComponents?.onVariants { variant : Variant ->
             val tasks = project.tasks
             val variantTitleName = variant.name.capitalize(Locale.ROOT)
 
@@ -81,9 +81,13 @@ class GradlePluginForXposed : Plugin<Project> {
             }
         }
 
-        val androidExtensions = project.extensions.getByName("android") as BaseAppModuleExtension
+        val androidExtensions = project.extensions.getByType(AppExtension::class.java)
         project.afterEvaluate {
-            DataProvider.init(moduleConfig)
+            if (!moduleConfig.isXposedModule) {
+                return@afterEvaluate
+            }
+
+            DataProvider.moduleConfig = moduleConfig
 
             val projectGeneratedDir = project.layout.buildDirectory.dir("generated")
             val generatedBaseDir = projectGeneratedDir.get().dir("xposed")
@@ -92,15 +96,31 @@ class GradlePluginForXposed : Plugin<Project> {
                 val variantDirName = variant.dirName
                 val variantTitleName = variant.name.capitalize(Locale.ROOT)
 
-                val generatedResDir = generatedBaseDir.dir("resValues/$variantDirName")
-
-                val taskName = "generate${variantTitleName}XposedModuleResource"
+                var taskName = "generate${variantTitleName}XposedModuleResource"
                 if (tasks.findByPath(taskName) == null) {
+                    val generatedResDir = generatedBaseDir.dir("resValues/$variantDirName")
                     val task = tasks.register(taskName, GenerateModuleResTask::class.java) {
                         outputDir.set(generatedResDir)
                     }
                     variant.registerGeneratedResFolders(project.files(generatedResDir).builtBy(task))
-                    variant.mergeResourcesProvider.dependsOn(task)
+                }
+
+                if (moduleConfig.isGenerateConfigClass) {
+                    taskName = "generate${variantTitleName}XposedModuleConfigClass"
+                    if (tasks.findByPath(taskName) == null) {
+                        val generatedJavaDir = generatedBaseDir.dir("source/$variantDirName").asFile
+                        val task = tasks.register(taskName, GenerateModuleConfigClassTask::class.java) {
+                            packageName = variant.applicationId
+                            outputs.dir(generatedJavaDir)
+                        }
+                        tasks.findByPath("compile${variantTitleName}Kotlin")?.dependsOn(task)
+                        variant.registerJavaGeneratingTask(task, generatedJavaDir)
+                        androidExtensions.sourceSets[variant.name].apply {
+                            java.setSrcDirs(java.srcDirs + generatedJavaDir)
+                        }
+                    }
+
+                    project.addDependencies("com.xzakota.xposed:constant", BuildConfig.VERSION)
                 }
             }
         }

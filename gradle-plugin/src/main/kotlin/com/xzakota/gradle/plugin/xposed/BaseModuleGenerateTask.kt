@@ -35,6 +35,9 @@ abstract class BaseModuleGenerateTask : DefaultTask() {
     @get:Input
     protected val isIncludeDependencies = xposedModuleConfig.isIncludeDependencies
 
+    @get:Input
+    protected val isGenerateConfigClass = xposedModuleConfig.isGenerateConfigClass
+
     @TaskAction
     fun run() {
         onAction()

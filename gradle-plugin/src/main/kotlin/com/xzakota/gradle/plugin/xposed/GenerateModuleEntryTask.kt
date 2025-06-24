@@ -44,7 +44,7 @@ abstract class GenerateModuleEntryTask : BaseModuleGenerateTask() {
     abstract val entryOutput : DirectoryProperty
 
     init {
-        description = "Generate module entry class"
+        description = "Generate module entry file"
     }
 
     override fun onAction() {
@@ -73,16 +73,16 @@ abstract class GenerateModuleEntryTask : BaseModuleGenerateTask() {
             }
         }
 
-        if (DataProvider.isSupportXposed) {
-            val xposedPropertiesDir = File(entryOutput.get().asFile, "assets")
-            xposedPropertiesDir.safeMkdirs()
-            File(xposedPropertiesDir, "xposed_init").writeText(DataProvider.xposedEntryClassName)
+        if (DataProvider.isSupportXposed()) {
+            val assetsDir = File(entryOutput.get().asFile, "assets")
+            assetsDir.safeMkdirs()
+            File(assetsDir, "xposed_init").writeText(DataProvider.xposedEntryClassName)
         }
 
-        if (DataProvider.isSupportLSPosed) {
-            val xposedPropertiesDir = File(entryOutput.get().asFile, "META-INF/xposed")
-            xposedPropertiesDir.safeMkdirs()
-            File(xposedPropertiesDir, "java_init.list").writeText(DataProvider.lsposedEntryClassName)
+        if (DataProvider.isSupportLSPosed()) {
+            val modulePropertiesDir = File(entryOutput.get().asFile, "META-INF/xposed")
+            modulePropertiesDir.safeMkdirs()
+            File(modulePropertiesDir, "java_init.list").writeText(DataProvider.lsposedEntryClassName)
         }
     }
 

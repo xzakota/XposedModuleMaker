@@ -13,12 +13,15 @@ plugins {
     alias(libs.plugins.vanniktech.maven.publish) apply false
 }
 
+
 subprojects {
     if (name == "example") {
         return@subprojects
     }
 
-    group = "com.xzakota.xposed"
+    val projectGroup by extra("com.xzakota.xposed")
+
+    group = projectGroup
     version = "0.1.2"
 
     plugins.withType(JavaPlugin::class.java) {

@@ -33,6 +33,9 @@ abstract class GenerateModuleManifestTask : BaseModuleGenerateTask() {
             addNamespace(NAMESPACE_ANDROID)
 
             addElement("application").apply {
+                val isSupportXposed = isSupportXposed()
+                val isSupportLSPosed = isSupportLSPosed()
+
                 if (isSupportLSPosed) {
                     addAttribute(QUALIFIED_NAME_DESCRIPTION, "@string/${resID.descriptionResID}")
                 }

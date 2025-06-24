@@ -44,7 +44,6 @@ android {
 }
 
 xposedModule {
-    isXposedModule = true
     minAPIVersion = XposedAPIVersion.XP_API_100
     description = "Xposed Example"
 
@@ -60,6 +59,8 @@ xposedModule {
     scope += listOf(
         "com.android.settings"
     )
+
+    isGenerateConfigClass = true
 }
 
 dependencies {
