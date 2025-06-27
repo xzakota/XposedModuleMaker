@@ -4,5 +4,13 @@ package com.xzakota.android.xposed;
 public enum XposedFramework {
     XPOSED("Xposed"), LSPOSED("LSPosed");
 
-    XposedFramework(String name) {}
+    private final String name;
+
+    XposedFramework(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

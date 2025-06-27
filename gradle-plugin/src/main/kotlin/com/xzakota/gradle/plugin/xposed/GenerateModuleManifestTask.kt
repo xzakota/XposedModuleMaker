@@ -5,6 +5,7 @@ import com.xzakota.android.AndroidXML.QUALIFIED_NAME_DESCRIPTION
 import com.xzakota.android.AndroidXML.QUALIFIED_NAME_NAME
 import com.xzakota.android.AndroidXML.QUALIFIED_NAME_RESOURCE
 import com.xzakota.android.AndroidXML.QUALIFIED_NAME_VALUE
+import com.xzakota.extension.addElement
 import com.xzakota.extension.addNamespace
 import com.xzakota.gradle.plugin.xposed.DataProvider.isSupportLSPosed
 import com.xzakota.gradle.plugin.xposed.DataProvider.isSupportXposed
@@ -16,7 +17,6 @@ import org.dom4j.io.XMLWriter
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.tasks.OutputFile
 
-@Suppress("unused")
 abstract class GenerateModuleManifestTask : BaseModuleGenerateTask() {
     @get:OutputFile
     abstract val outputFile : RegularFileProperty
@@ -29,10 +29,10 @@ abstract class GenerateModuleManifestTask : BaseModuleGenerateTask() {
         val resID = moduleConfig.resGenerator.resID
         val document = DocumentHelper.createDocument()
 
-        document.addElement("manifest").apply {
+        document.addElement("manifest") {
             addNamespace(NAMESPACE_ANDROID)
 
-            addElement("application").apply {
+            addElement("application") {
                 val isSupportXposed = isSupportXposed()
                 val isSupportLSPosed = isSupportLSPosed()
 
@@ -102,7 +102,7 @@ abstract class GenerateModuleManifestTask : BaseModuleGenerateTask() {
             return
         }
 
-        val element = addElement("meta-data").apply {
+        val element = addElement("meta-data") {
             addAttribute(QUALIFIED_NAME_NAME, name)
         }
 

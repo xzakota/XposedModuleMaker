@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 package com.xzakota.extension
 
 import java.io.File

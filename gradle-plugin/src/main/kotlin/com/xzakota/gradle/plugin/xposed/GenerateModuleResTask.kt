@@ -7,7 +7,6 @@ import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.tasks.OutputDirectory
 import java.io.File
 
-@Suppress("unused")
 abstract class GenerateModuleResTask : BaseModuleGenerateTask() {
     @get:OutputDirectory
     abstract val outputDir : DirectoryProperty

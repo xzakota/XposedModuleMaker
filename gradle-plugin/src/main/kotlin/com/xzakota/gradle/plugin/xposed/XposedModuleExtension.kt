@@ -8,7 +8,7 @@ import org.gradle.api.Action
 internal typealias StringList = ArrayList<String>
 internal typealias StringRes = HashMap<String, String>
 
-@Suppress("unused", "MemberVisibilityCanBePrivate")
+@Suppress("unused")
 open class XposedModuleExtension {
     // 是否为 Xposed 模块
     var isXposedModule = true

@@ -5,7 +5,6 @@ import com.xzakota.extension.safeCreateNewFile
 import org.gradle.api.tasks.Internal
 import java.io.File
 
-@Suppress("unused")
 abstract class GenerateModuleConfigClassTask : BaseModuleGenerateTask() {
     @Internal
     lateinit var packageName : String

@@ -5,7 +5,6 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
 
-@Suppress("unused")
 abstract class BaseModuleGenerateTask : DefaultTask() {
     init {
         group = "xposed"
@@ -31,12 +30,6 @@ abstract class BaseModuleGenerateTask : DefaultTask() {
 
     @Internal
     protected val moduleResGenerator = xposedModuleConfig.resGenerator
-
-    @get:Input
-    protected val isIncludeDependencies = xposedModuleConfig.isIncludeDependencies
-
-    @get:Input
-    protected val isGenerateConfigClass = xposedModuleConfig.isGenerateConfigClass
 
     @TaskAction
     fun run() {

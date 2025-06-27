@@ -27,7 +27,6 @@ import java.io.File
 import java.io.FileOutputStream
 import java.util.jar.JarOutputStream
 
-@Suppress("unused")
 abstract class GenerateModuleEntryTask : BaseModuleGenerateTask() {
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.RELATIVE)
@@ -86,7 +85,11 @@ abstract class GenerateModuleEntryTask : BaseModuleGenerateTask() {
         }
     }
 
-    private fun processClass(classRegistry : ClassRegistry, source : FileSource, jarOutput : JarOutputStream, name : String) {
+    private fun processClass(
+        classRegistry : ClassRegistry,
+        source : FileSource, jarOutput :
+        JarOutputStream, name : String
+    ) {
         if (!name.endsWith(".class")) {
             return
         }

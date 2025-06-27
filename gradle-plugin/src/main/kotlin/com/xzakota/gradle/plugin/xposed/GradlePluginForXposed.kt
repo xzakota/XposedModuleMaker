@@ -1,5 +1,3 @@
-@file:Suppress("unused", "DEPRECATION")
-
 package com.xzakota.gradle.plugin.xposed
 
 import com.android.build.api.artifact.ScopedArtifact
@@ -10,12 +8,11 @@ import com.android.build.gradle.AppExtension
 import com.android.build.gradle.AppPlugin
 import com.xzakota.android.xposed.XposedAPIVersion
 import com.xzakota.extension.addDependencies
+import com.xzakota.extension.capitalizeFirstChar
 import com.xzakota.xposed.BuildConfig
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.get
-import java.util.Locale
-
 
 @Suppress("unused")
 class GradlePluginForXposed : Plugin<Project> {
@@ -35,7 +32,7 @@ class GradlePluginForXposed : Plugin<Project> {
             }
 
             val tasks = project.tasks
-            val variantTitleName = variant.name.capitalize(Locale.ROOT)
+            val variantTitleName = variant.name.capitalizeFirstChar()
 
             var taskName = "generate${variantTitleName}XposedModuleManifest"
             if (tasks.findByPath(taskName) == null) {
@@ -94,7 +91,7 @@ class GradlePluginForXposed : Plugin<Project> {
 
             androidExtensions.applicationVariants.forEach { variant ->
                 val variantDirName = variant.dirName
-                val variantTitleName = variant.name.capitalize(Locale.ROOT)
+                val variantTitleName = variant.name.capitalizeFirstChar()
 
                 var taskName = "generate${variantTitleName}XposedModuleResource"
                 if (tasks.findByPath(taskName) == null) {

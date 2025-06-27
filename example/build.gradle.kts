@@ -60,6 +60,7 @@ xposedModule {
         "com.android.settings"
     )
 
+    isIncludeDependencies = false
     isGenerateConfigClass = true
 }
 
