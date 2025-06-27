@@ -32,7 +32,7 @@ import de.robv.android.xposed.IXposedHookLoadPackage
 
 // 添加注解
 @ModuleEntry
-class XPModuleMainEntry : IXposedHookLoadPackage 
+class XPInitEntry : IXposedHookLoadPackage 
 ```
 
 `LSP Modern API`
@@ -45,7 +45,7 @@ import io.github.libxposed.api.XposedModuleInterface
 
 // 添加注解
 @ModuleEntry
-class LSPModuleMainEntry(base : XposedInterface, param : XposedModuleInterface.ModuleLoadedParam) : XposedModule(base, param) 
+class LSPInitEntry(base : XposedInterface, param : XposedModuleInterface.ModuleLoadedParam) : XposedModule(base, param) 
 ```
 
 ## 配置二
@@ -56,6 +56,7 @@ class LSPModuleMainEntry(base : XposedInterface, param : XposedModuleInterface.M
 |      description      |    模块介绍     |
 |         scope         | 作用域(需管理器支持) |
 | isIncludeDependencies |   是否检索依赖库   |
+| isGenerateConfigClass |   是否生成信息类   |
 
 |     扩展方法     |          作用           |
 |:------------:|:---------------------:|
@@ -111,6 +112,7 @@ xposedModule {
     )
     
     isIncludeDependencies = false
+    isGenerateConfigClass = true
 }
 ```
 另可参考 [example](https://github.com/xzakota/XposedModuleMaker/tree/main/example) 模块
