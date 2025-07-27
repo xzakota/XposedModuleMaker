@@ -3,6 +3,7 @@
 import com.vanniktech.maven.publish.MavenPublishBaseExtension
 import com.vanniktech.maven.publish.MavenPublishPlugin
 import com.vanniktech.maven.publish.SonatypeHost
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinBasePlugin
 
@@ -33,7 +34,7 @@ subprojects {
 
     plugins.withType(KotlinBasePlugin::class.java) {
         extensions.configure(KotlinJvmProjectExtension::class.java) {
-            jvmToolchain(21)
+            compilerOptions.jvmTarget.set(JvmTarget.JVM_21)
         }
     }
 
