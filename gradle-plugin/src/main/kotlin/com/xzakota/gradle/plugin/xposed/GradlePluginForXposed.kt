@@ -110,7 +110,19 @@ class GradlePluginForXposed : Plugin<Project> {
                             packageName = variant.applicationId
                             outputs.dir(generatedJavaDir)
                         }
-                        tasks.findByPath("compile${variantTitleName}Kotlin")?.dependsOn(task)
+
+                        val kspTask = tasks.findByPath("ksp${variantTitleName}Kotlin")
+                        if (kspTask != null) {
+                            task.get().mustRunAfter(kspTask)
+                        }
+
+                        val compileKotlinTask = tasks.findByPath("compile${variantTitleName}Kotlin")
+                        if (compileKotlinTask != null) {
+                            compileKotlinTask.dependsOn(task)
+                        } else {
+                            tasks.getByPath("compile${variantTitleName}JavaWithJavac").dependsOn(task)
+                        }
+
                         variant.registerJavaGeneratingTask(task, generatedJavaDir)
                         androidExtensions.sourceSets[variant.name].apply {
                             java.setSrcDirs(java.srcDirs + generatedJavaDir)
