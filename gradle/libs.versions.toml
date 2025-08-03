@@ -19,6 +19,6 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 android-application = { id = "com.android.application", version.ref = "agp" }
 gradle-plugin-publish = { id = "com.gradle.plugin-publish", version = "1.3.1" }
-vanniktech-maven-publish = { id = "com.vanniktech.maven.publish", version = "0.30.0" }
+vanniktech-maven-publish = { id = "com.vanniktech.maven.publish", version = "0.34.0" }
 
 xposed-module-maker = { id = "com.xzakota.xposed", version.ref = "xposed-module-maker" }
