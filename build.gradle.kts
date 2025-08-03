@@ -2,7 +2,6 @@
 
 import com.vanniktech.maven.publish.MavenPublishBaseExtension
 import com.vanniktech.maven.publish.MavenPublishPlugin
-import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinBasePlugin
@@ -14,7 +13,6 @@ plugins {
     alias(libs.plugins.vanniktech.maven.publish) apply false
 }
 
-
 subprojects {
     if (name == "example") {
         return@subprojects
@@ -23,7 +21,7 @@ subprojects {
     val projectGroup by extra("com.xzakota.xposed")
 
     group = projectGroup
-    version = "0.1.3"
+    version = "0.1.4"
 
     plugins.withType(JavaPlugin::class.java) {
         extensions.configure(JavaPluginExtension::class.java) {
@@ -44,7 +42,7 @@ subprojects {
 
             coordinates(group.toString(), name, version.toString())
 
-            publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, automaticRelease = true)
+            publishToMavenCentral(true)
             signAllPublications()
         }
     }
