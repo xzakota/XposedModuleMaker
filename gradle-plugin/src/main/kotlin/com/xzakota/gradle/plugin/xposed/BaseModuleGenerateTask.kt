@@ -11,7 +11,10 @@ abstract class BaseModuleGenerateTask : DefaultTask() {
     }
 
     @Internal
-    protected val xposedModuleConfig = DataProvider.moduleConfig
+    protected val currentProjectName = project.name
+
+    @Internal
+    protected val xposedModuleConfig = DataProvider.moduleConfig[currentProjectName]!!
 
     @get:Input
     protected val moduleMinAPIVersion = xposedModuleConfig.minAPIVersion

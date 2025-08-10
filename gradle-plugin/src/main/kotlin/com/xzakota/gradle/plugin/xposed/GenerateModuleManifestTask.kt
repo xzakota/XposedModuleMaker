@@ -9,7 +9,6 @@ import com.xzakota.extension.addElement
 import com.xzakota.extension.addNamespace
 import com.xzakota.gradle.plugin.xposed.DataProvider.isSupportLSPosed
 import com.xzakota.gradle.plugin.xposed.DataProvider.isSupportXposed
-import com.xzakota.gradle.plugin.xposed.DataProvider.moduleConfig
 import org.dom4j.DocumentHelper
 import org.dom4j.Element
 import org.dom4j.io.OutputFormat
@@ -26,15 +25,15 @@ abstract class GenerateModuleManifestTask : BaseModuleGenerateTask() {
     }
 
     override fun onAction() {
-        val resID = moduleConfig.resGenerator.resID
+        val resID = moduleResGenerator.resID
         val document = DocumentHelper.createDocument()
 
         document.addElement("manifest") {
             addNamespace(NAMESPACE_ANDROID)
 
             addElement("application") {
-                val isSupportXposed = isSupportXposed()
-                val isSupportLSPosed = isSupportLSPosed()
+                val isSupportXposed = isSupportXposed(xposedModuleConfig)
+                val isSupportLSPosed = isSupportLSPosed(xposedModuleConfig)
 
                 if (isSupportLSPosed) {
                     addAttribute(QUALIFIED_NAME_DESCRIPTION, "@string/${resID.descriptionResID}")
@@ -43,25 +42,25 @@ abstract class GenerateModuleManifestTask : BaseModuleGenerateTask() {
                 addMetaDataElementWithValue("xposedmodule", "true", isSupportXposed)
 
                 addMetaDataElement("xposeddescription", isSupportXposed) {
-                    if (moduleConfig.descriptionRes.isNotEmpty()) {
+                    if (moduleDescriptionRes.isNotEmpty()) {
                         it.addAttribute(QUALIFIED_NAME_RESOURCE, "@string/${resID.descriptionResID}")
                     } else {
-                        it.addAttribute(QUALIFIED_NAME_VALUE, moduleConfig.description)
+                        it.addAttribute(QUALIFIED_NAME_VALUE, moduleDescription)
                     }
                 }
 
-                addMetaDataElementWithValue("xposedminversion", moduleConfig.minAPIVersion, isSupportXposed)
+                addMetaDataElementWithValue("xposedminversion", moduleMinAPIVersion, isSupportXposed)
 
                 addMetaDataElementWithResource(
                     "xposedscope",
                     "@array/${resID.scopeResID}",
-                    isSupportXposed && moduleConfig.scope.isNotEmpty()
+                    isSupportXposed && moduleScope.isNotEmpty()
                 )
 
                 addMetaDataElementWithResource(
                     "xposedsharedprefs",
                     "true",
-                    isSupportXposed && isSupportLSPosed && moduleConfig.lsposed.isNewXSharedPreferences
+                    isSupportXposed && isSupportLSPosed && xposedModuleConfig.lsposed.isNewXSharedPreferences
                 )
             }
         }

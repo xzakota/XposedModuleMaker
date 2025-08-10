@@ -63,6 +63,7 @@ open class XposedModuleExtension {
             isXposedModule => $isXposedModule
             minAPIVersion => $minAPIVersion
             framework => $framework
+            scope => $scope
         }
     """.trimIndent()
 

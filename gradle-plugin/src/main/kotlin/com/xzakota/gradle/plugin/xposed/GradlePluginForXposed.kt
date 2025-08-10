@@ -84,7 +84,7 @@ class GradlePluginForXposed : Plugin<Project> {
                 return@afterEvaluate
             }
 
-            DataProvider.moduleConfig = moduleConfig
+            DataProvider.moduleConfig[project.name] = moduleConfig
 
             val projectGeneratedDir = project.layout.buildDirectory.dir("generated")
             val generatedBaseDir = projectGeneratedDir.get().dir("xposed")
