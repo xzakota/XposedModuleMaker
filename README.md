@@ -1,6 +1,6 @@
 # Xposed Module Maker
-[![GitHub license](https://img.shields.io/github/license/xzakota/XposedModuleMaker?color=blue)](https://github.com/xzakota/XposedModuleMaker/blob/main/LICENSE)
-[![GitHub release](https://img.shields.io/github/v/release/xzakota/XposedModuleMaker?display_name=release&logo=github&color=green)](https://github.com/xzakota/XposedModuleMaker/releases)
+[![GitHub License](https://img.shields.io/github/license/xzakota/XposedModuleMaker?color=blue)](https://github.com/xzakota/XposedModuleMaker/blob/main/LICENSE)
+[![Maven Central](https://img.shields.io/maven-central/v/com.xzakota.xposed/annotation?color=green)](https://search.maven.org/search?q=g:com.xzakota.xposed)
 
 快速配置 [Xposed](https://api.xposed.info) 模块**元信息**。利用 Gradle 插件实现入口类的检测写入和其他资源的创建合并。
 > 仅针对元信息配置，不包含 HOOK 代码实现
