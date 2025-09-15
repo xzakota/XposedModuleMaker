@@ -72,16 +72,22 @@ abstract class GenerateModuleEntryTask : BaseModuleGenerateTask() {
             }
         }
 
+        var entryDir = File(entryOutput.get().asFile, "assets")
+        var entryFile = File(entryDir, "xposed_init")
         if (DataProvider.isSupportXposed(xposedModuleConfig)) {
-            val assetsDir = File(entryOutput.get().asFile, "assets")
-            assetsDir.safeMkdirs()
-            File(assetsDir, "xposed_init").writeText(DataProvider.xposedEntryClassName)
+            entryDir.safeMkdirs()
+            entryFile.writeText(DataProvider.xposedEntryClassName)
+        } else {
+            entryFile.deleteRecursively()
         }
 
+        entryDir = File(entryOutput.get().asFile, "META-INF/xposed")
+        entryFile = File(entryDir, "java_init.list")
         if (DataProvider.isSupportLSPosed(xposedModuleConfig)) {
-            val modulePropertiesDir = File(entryOutput.get().asFile, "META-INF/xposed")
-            modulePropertiesDir.safeMkdirs()
-            File(modulePropertiesDir, "java_init.list").writeText(DataProvider.lsposedEntryClassName)
+            entryDir.safeMkdirs()
+            entryFile.writeText(DataProvider.lsposedEntryClassName)
+        } else {
+            entryFile.deleteRecursively()
         }
     }
 
